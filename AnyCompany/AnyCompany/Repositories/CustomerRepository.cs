@@ -12,6 +12,7 @@ namespace AnyCompany.Repositories
     //and allows for it to provide it's custom implementation without modifying existing code/components
 
     public delegate Customer LoadDataFromDBDelegate(SqlConnection sqlConnection, int customerId, Customer customer);
+    public delegate int LoadCustomerNameFromDBDelegate(SqlConnection, string customerName);
     public delegate void DeleteCustomerDelegate(SqlConnection sqlConnection, int customerId);
     public delegate void UpdateCustomerDelegate(SqlConnection sqlConnection, int customerId, Customer customer);
     public delegate void CreateDelegate(Customer customer);
@@ -30,11 +31,21 @@ namespace AnyCompany.Repositories
 
             //Making this part generic means that it is reusable
             //This can be called by a method that wants to create, delete, create, update customers, etc
-            
+
             loadDataDelegate(connection, customerId, customer);
             connection.Close();
 
             return customer;
+        }
+
+        public static int GetCustomerID(string customerName, LoadCustomerNameFromDBDelegate loadCustomerNameFromDBDelegate)
+        {
+            SqlConnection connection = new SqlConnection(ConnectionString);
+            connection.Open();
+
+            int result = loadCustomerNameFromDBDelegate(connection, customerName);
+            connection.Close();
+            return result;
         }
 
         public static void DeleteCustomer(int customerId, DeleteCustomerDelegate deleteCustomerDelegate)
@@ -51,7 +62,7 @@ namespace AnyCompany.Repositories
             SqlConnection connection = new SqlConnection(ConnectionString);
             connection.Open();
 
-            updateCustomerDelegate(connection,customerId, customer);
+            updateCustomerDelegate(connection, customerId, customer);
             connection.Close();
         }
     }

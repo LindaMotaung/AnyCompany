@@ -13,6 +13,26 @@ namespace AnyCompany.Services
 {
     public class CustomerService
     {
+        public int GetCustomerID(string customerName)
+        {
+            LoadCustomerNameFromDBDelegate delegateInstance = new LoadCustomerNameFromDBDelegate(PerformGetCustomerByID);
+            return CustomerRepository.GetCustomerID(customerName, delegateInstance);
+        }
+
+        public int PerformGetCustomerByID(SqlConnection connection, string customerName)
+        {
+            int result = 0;
+            SqlCommand command = new SqlCommand("SELECT * FROM Customer WHERE Name = " + customerName.Trim(),
+              connection);
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["ID"]);
+            }
+            return result;
+        }
+
         public void DeleteCustomer(int customerId)
         {
             DeleteCustomerDelegate delegateInstanceObj = new DeleteCustomerDelegate(PerformDelete);
