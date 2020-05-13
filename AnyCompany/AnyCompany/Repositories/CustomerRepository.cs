@@ -13,7 +13,7 @@ namespace AnyCompany.Repositories
 
     public delegate Customer LoadDataFromDBDelegate(SqlConnection sqlConnection, int customerId, Customer customer);
     public delegate void DeleteCustomerDelegate(SqlConnection sqlConnection, int customerId);
-    public delegate void UpdateCustomerDelegate(int customerId, Customer customer);
+    public delegate void UpdateCustomerDelegate(SqlConnection sqlConnection, int customerId, Customer customer);
     public delegate void CreateDelegate(Customer customer);
 
     public static class CustomerRepository
@@ -28,7 +28,7 @@ namespace AnyCompany.Repositories
 
             //Making this part generic means that it is reusable
             //This can be called by a method that wants to create, delete, create, update customers, etc
-
+            
             loadDataDelegate(connection, customerId, customer);
             connection.Close();
 
@@ -43,5 +43,20 @@ namespace AnyCompany.Repositories
             deleteCustomerDelegate(connection, customerId);
             connection.Close();
         }
+
+        public static void UpdateCustomer(int customerId, Customer customer, UpdateCustomerDelegate updateCustomerDelegate)
+        {
+            SqlConnection connection = new SqlConnection(ConnectionString);
+            connection.Open();
+
+            updateCustomerDelegate(connection,customerId, customer);
+            connection.Close();
+        }
+    }
+
+    public static class ExperiencedCustomerRepository
+    {
+        //This is an example to show that the loadDataDelegate delegate can be used here to load data as well
+        //This is what is meant when we say that the class specific implementation is deffered to the calling client
     }
 }

@@ -1,0 +1,5 @@
+You can set the PresentationLayer as the startup project if you want to see the communication right though to the 
+windows forms application 
+
+Only the 'Delete Customer' button has implementation to invoke the DeleteCustomerDelegate by instantiating the 
+CustomerService class
