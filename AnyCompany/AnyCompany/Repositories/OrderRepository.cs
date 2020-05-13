@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnyCompany.Repositories
 {
-    public class OrderRepository : IOrderRepository
+    internal class OrderRepository : IOrderRepository
     {
         private static string ConnectionString = @"Data Source=(local);Database=Orders;User Id=admin;Password=password;";
         public void Save(Order order)
