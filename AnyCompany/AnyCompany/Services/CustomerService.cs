@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +21,19 @@ namespace AnyCompany.Services
 
         public void PerformDelete(SqlConnection connection, int customerId)
         {
-            string procedureName = "delete from Customer where ID='" + customerId + "'";
-            SqlCommand cmd = new SqlCommand(procedureName, connection);
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = connection;
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
+            try
+            {
+                string procedureName = "delete from Customer where ID='" + customerId + "'";
+                SqlCommand cmd = new SqlCommand(procedureName, connection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = connection;
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
 
         public void UpdateCustomer(int customerId, Customer customer)

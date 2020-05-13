@@ -20,6 +20,8 @@ namespace AnyCompany.Repositories
     {
         private static string ConnectionString = @"Data Source=(local);Database=Customers;User Id=admin;Password=password;";
 
+        private static string testExample = @"data source=172.27.159.152\INT_CDH_QA;initial catalog=TestPROD;integrated security=True;";
+
         public static Customer Load(int customerId, LoadDataFromDBDelegate loadDataDelegate)
         {
             Customer customer = new Customer();
@@ -37,7 +39,7 @@ namespace AnyCompany.Repositories
 
         public static void DeleteCustomer(int customerId, DeleteCustomerDelegate deleteCustomerDelegate)
         {
-            SqlConnection connection = new SqlConnection(ConnectionString);
+            SqlConnection connection = new SqlConnection(testExample);
             connection.Open();
 
             deleteCustomerDelegate(connection, customerId);
