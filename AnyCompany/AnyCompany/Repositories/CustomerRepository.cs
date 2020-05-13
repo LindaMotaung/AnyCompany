@@ -12,7 +12,7 @@ namespace AnyCompany.Repositories
     //and allows for it to provide it's custom implementation without modifying existing code/components
 
     public delegate Customer LoadDataFromDBDelegate(SqlConnection sqlConnection, int customerId, Customer customer);
-    public delegate int LoadCustomerNameFromDBDelegate(SqlConnection, string customerName);
+    public delegate int LoadCustomerNameFromDBDelegate(SqlConnection connection, string customerName);
     public delegate void DeleteCustomerDelegate(SqlConnection sqlConnection, int customerId);
     public delegate void UpdateCustomerDelegate(SqlConnection sqlConnection, int customerId, Customer customer);
     public delegate void CreateDelegate(Customer customer);
@@ -21,7 +21,7 @@ namespace AnyCompany.Repositories
     {
         private static string ConnectionString = @"Data Source=(local);Database=Customers;User Id=admin;Password=password;";
 
-        private static string testExample = @"data source=172.27.159.152\INT_CDH_QA;initial catalog=TestPROD;integrated security=True;";
+        public static string testExample = @"data source=172.27.159.152\INT_CDH_QA;initial catalog=TestPROD;integrated security=True;";
 
         public static Customer Load(int customerId, LoadDataFromDBDelegate loadDataDelegate)
         {

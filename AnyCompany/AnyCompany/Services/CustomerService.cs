@@ -22,8 +22,11 @@ namespace AnyCompany.Services
         public int PerformGetCustomerByID(SqlConnection connection, string customerName)
         {
             int result = 0;
-            SqlCommand command = new SqlCommand("SELECT * FROM Customer WHERE Name = " + customerName.Trim(),
+            connection = new SqlConnection(CustomerRepository.testExample);
+            connection.Open();
+            SqlCommand command = new SqlCommand("SELECT * FROM Customer WHERE Name ='" + customerName.Trim() + "'",
               connection);
+
             var reader = command.ExecuteReader();
 
             while (reader.Read())
